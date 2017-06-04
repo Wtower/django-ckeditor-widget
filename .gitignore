@@ -1,0 +1,4 @@
+.idea/
+build/
+dist/
+django_ckeditor_widget.egg-info/

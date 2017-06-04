@@ -1,0 +1,36 @@
+{% load static %}
+<!--suppress HtmlFormInputWithoutLabel-->
+<div style="float: left">
+<textarea id="ckeditor-{{ widget.name }}" name="{{ widget.name }}">
+{% if widget.value %}{{ widget.value }}{% endif %}</textarea>
+</div>
+
+<script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+<script>
+    cke_o = {};
+    cke_o.toolbarGroups= [
+        { name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
+        { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+        { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+        { name: 'forms' },
+        { name: 'links' },
+        { name: 'insert' },
+        { name: 'styles' },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+        { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+        { name: 'colors' },
+        { name: 'tools' },
+        { name: 'others' },
+        { name: 'about' }
+    ];
+    CKEDITOR.config.entities_greek = false;
+    CKEDITOR.config.format_tags = 'p;h2;h3;h4';
+    {% if perms.ninecms.use_full_html %}
+        cke_o.removeButtons = '';
+    {% else %}
+        CKEDITOR.config.removePlugins = 'pbckcode, codeTag, div, elementspath, filebrowser, youtube, pagebreak, removeformat, showblocks, sourcearea';
+        {# basic: CKEDITOR.config.removePlugins += ', blockquote, find, format, horizontalrule, image, indentblock, justify, magicline, maximize, newpage, pastetext, pastefromword, quicktable, selectall, showborders, specialchar, scayt, stylescombo, table, tabletools, wsc, wordcount'; #}
+        {# default {removeButtons: 'Cut, Copy, Paste, Undo, Redo, Anchor'}); #}
+    {% endif %}
+    CKEDITOR.replace('ckeditor-{{ widget.name }}', cke_o);
+</script>
